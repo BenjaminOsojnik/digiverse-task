@@ -4,7 +4,7 @@ export type TGlobalState = {
     selectedObject: TMusic
 }
 
-export type TMusic = {
+export type TMusic = {    
     id?: string,
     title?: string,
     children: TMusic[]
