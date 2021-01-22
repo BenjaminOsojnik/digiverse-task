@@ -76,7 +76,10 @@ const initialState: TGlobalState = {
         ]
     
     },
-    isEditFormVisible: false  
+    isEditFormVisible: false,
+    selectedObject: {
+        children:[]
+    }
 }
 
 export default function globalReducer(state: TGlobalState = initialState, action: globalActionTypes): TGlobalState {

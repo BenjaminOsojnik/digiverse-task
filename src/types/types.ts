@@ -1,6 +1,7 @@
 export type TGlobalState = {
     data: TMusic,
-    isEditFormVisible: boolean
+    isEditFormVisible: boolean,
+    selectedObject: TMusic
 }
 
 export type TMusic = {
