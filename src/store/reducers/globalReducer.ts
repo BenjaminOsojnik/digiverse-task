@@ -3,10 +3,12 @@ import {
     SET_EDIT_SELECTED_OBJECT_ACTION,
     UPDATE_OBJECT_ACTION,
     UPDATE_SELECTED_OBJECT_ACTION,
+    DELETE_OBJECT_ACTION,
     globalActionTypes} from '../actions/globalActionTypes'
 
 import {TGlobalState, TMusic} from '../../types/types'
 import generateGuidG4 from '../../functions/generateGuidG4'
+import { emptyObject } from '../../constants/emptyObject'
 const initialState: TGlobalState = {
     data: {
         children: [
@@ -121,7 +123,6 @@ export default function globalReducer(state: TGlobalState = initialState, action
         if (editedObject.id === parent.id){
             tempData.title = editedObject.title
             tempData.children = editedObject.children
-            return {...state.data, tempData}
         }
 
         else {
@@ -136,6 +137,22 @@ export default function globalReducer(state: TGlobalState = initialState, action
         return {...state.data, tempData}
 
     }
+
+    // const deleteNestedArray = (parent: TMusic, deletedObject: TMusic) => {
+    //     let tempData = parent
+    //     tempData.children.map(child => {
+    //         if (child.id === deletedObject.id){
+    //             console.log(true)
+    //             let b:TMusic = {id: tempData.id, title: tempData.title, children: tempData.children.filter(ch => ch.id !== deletedObject.id)}
+    //             console.log(b)
+    //             return b
+    //         }
+    //         else {
+    //             deleteNestedArray(child, deletedObject)
+    //         }
+
+    //     })
+    // }
 
     switch (action.type) {
         case SET_EDIT_FORM_VISIBILITY_ACTION: {
@@ -153,17 +170,23 @@ export default function globalReducer(state: TGlobalState = initialState, action
         }
         
         case UPDATE_OBJECT_ACTION: {
-            let tempData = findNestedArray({children: state.data.children}, action.object)
-            console.log('test')
-            console.log(tempData)
+            let tempData = findNestedArray(state.data, action.object)
             return {
-                ...state, data: tempData
+                ...state, data: tempData, isEditFormVisible: false, selectedObject: emptyObject
             }
         }
 
         case UPDATE_SELECTED_OBJECT_ACTION: {
             return {
                 ...state, selectedObject: action.object
+            }
+        }
+
+        case DELETE_OBJECT_ACTION: {
+            let tempData = findNestedArray(state.data, action.object)
+            console.log(tempData)
+            return {
+                ...state, data: tempData
             }
         }
  
@@ -196,6 +219,13 @@ export const UpdateObject = (object: TMusic): globalActionTypes => {
 export const updateSelectedObject = (object: TMusic): globalActionTypes => {
     return {
         type: UPDATE_SELECTED_OBJECT_ACTION,
+        object
+    }
+}
+
+export const deletedObject = (object: TMusic): globalActionTypes => {
+    return {
+        type: DELETE_OBJECT_ACTION,
         object
     }
 }

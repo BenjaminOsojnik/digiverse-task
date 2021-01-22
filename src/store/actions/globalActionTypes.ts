@@ -4,6 +4,7 @@ export const SET_EDIT_FORM_VISIBILITY_ACTION = 'SET_EDIT_FORM_VISIBILITY_ACTION'
 export const SET_EDIT_SELECTED_OBJECT_ACTION = 'SET_EDIT_SELECTED_OBJECT_ACTION'
 export const UPDATE_OBJECT_ACTION = 'UPDATE_OBJECT_ACTION'
 export const UPDATE_SELECTED_OBJECT_ACTION = 'UPDATE_SELECTED_OBJECT_ACTION'
+export const DELETE_OBJECT_ACTION = 'DELETE_OBJECT_ACTION'
 
 
 interface SetEditFormVisibilityAction {
@@ -27,6 +28,11 @@ interface UpdateSelectedObjectAction {
     object: TMusic
 }
 
+interface DeleteObjectAction {
+    type: typeof DELETE_OBJECT_ACTION,
+    object: TMusic
+}
+
 
 
 export type globalActionTypes =
@@ -34,3 +40,4 @@ export type globalActionTypes =
     |   SetEditSelectedObjectAction
     |   UpdateObjectAction
     |   UpdateSelectedObjectAction
+    |   DeleteObjectAction

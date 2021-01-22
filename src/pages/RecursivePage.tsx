@@ -7,7 +7,6 @@ import ObjectEditForm from '../forms/ObjectEditForm'
 const RecursivePage = () => {
     const data = useSelector((state:TRootReducer) => state.globalState.data)
     const isEditFormVisible = useSelector((state:TRootReducer) => state.globalState.isEditFormVisible)
-    console.log(data)
 
     return(
         <Fragment>
