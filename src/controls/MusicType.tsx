@@ -6,9 +6,9 @@ type Props = {
 }
 
 const MusicType:FunctionComponent<Props> = ({parent}): any => {
+
     return (
         <Fragment>
-            {parent.title !== undefined && 
                 <ul style={{padding: "3px" }}>
                     <li style={{margin: "0px"}}>{parent.title}</li>
                     <ul style={{display:"inline-block"}}>
@@ -20,7 +20,6 @@ const MusicType:FunctionComponent<Props> = ({parent}): any => {
                     </ul>
                     
                 </ul>
-        }
         
         </Fragment>
 

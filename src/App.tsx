@@ -1,3 +1,4 @@
+import './App.css'
 import RecursivePage from './pages/RecursivePage'
 
 function App() {
@@ -5,7 +6,7 @@ function App() {
     <div className="App">
         <RecursivePage />
     </div>
-  )
+  );
 }
 
 export default App
