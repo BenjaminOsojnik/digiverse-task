@@ -82,8 +82,8 @@ const ObjectEditForm = () => {
             <button onClick={()=> handleAddChild()}>Add Subgenre</button><br />
             {object.id !== 'top' ? (
                 <Fragment>
-                    <button onClick={handleUpdateGenre}>Update Genre</button>
-                    <button onClick={handleDeleteGenre}>Delete Genre</button>
+                    <button onClick={() => handleUpdateGenre()}>Update Genre</button>
+                    <button onClick={() => handleDeleteGenre()}>Delete Genre</button>
                 </Fragment>) 
                 : 
                 <button onClick={() => dispatch(UpdateObject(object))}>Add Genre</button>
