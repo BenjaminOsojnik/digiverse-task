@@ -6,6 +6,6 @@ export const EditSelectedObject = (object: TMusic, visible:boolean): any => {
         if (visible === true)
             await dispatch(SetEditFormVisibility(!visible))
         await dispatch(SetEditSelectedObject(object))
-        await dispatch(SetEditFormVisibility(visible))
+            await dispatch(SetEditFormVisibility(visible))
     }
 }

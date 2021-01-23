@@ -170,9 +170,21 @@ export default function globalReducer(state: TGlobalState = initialState, action
         }
         
         case UPDATE_OBJECT_ACTION: {
-            let tempData = findNestedArray(state.data, action.object)
-            return {
-                ...state, data: tempData, isEditFormVisible: false, selectedObject: emptyObject
+            if (action.object.id !== 'top'){
+                let tempData = findNestedArray(state.data, action.object)
+                return {
+                    ...state, data: tempData, isEditFormVisible: false, selectedObject: emptyObject
+                }
+                
+            }
+            else {
+                let tempData = state.data
+                let tempObject = action.object
+                tempObject.id = generateGuidG4()
+                tempData.children.push(tempObject)
+                return {
+                    ...state, data: tempData, isEditFormVisible: false, selectedObject: emptyObject
+                }
             }
         }
 
@@ -186,7 +198,7 @@ export default function globalReducer(state: TGlobalState = initialState, action
             let tempData = findNestedArray(state.data, action.object)
             console.log(tempData)
             return {
-                ...state, data: tempData
+                ...state, data: tempData, isEditFormVisible: false, selectedObject: emptyObject
             }
         }
  

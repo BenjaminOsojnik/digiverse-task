@@ -6,6 +6,7 @@ import { TRootReducer } from '../store/reducers'
 import { updateSelectedObject, UpdateObject, deletedObject } from '../store/reducers/globalReducer'
 import {EditSelectedObject} from '../store/actions/globalActionCreator'
 import { TMusic } from '../types/types'
+import MusicType from '../controls/MusicType'
 
 const ObjectEditForm = () => {
     const object = useSelector((state:TRootReducer)=> state.globalState.selectedObject)
@@ -32,9 +33,10 @@ const ObjectEditForm = () => {
                     title: childTitle,
                     children: []
                 }
+                
                 let tempObject = object
                 tempObject.children.push(tempChild)
-                dispatch(EditSelectedObject(emptyObject, false))
+                dispatch(EditSelectedObject(object, true))
                 
             }
         }
@@ -59,6 +61,12 @@ const ObjectEditForm = () => {
         deleteNestedArray(data, object)
     }
 
+    const handleUpdate = () => {
+        if (object.title !== '')
+            dispatch(UpdateObject(object))
+        else
+            console.error('title cannot be empty')
+    }
 
 
     return (
@@ -72,10 +80,18 @@ const ObjectEditForm = () => {
                     <input name={"child-title"} value={childTitle} onChange={(e) => setChildTitle(e.target.value)} /> <br />
                 </Fragment>
             }
-            <button onClick={()=> handleAddChild()}>Add subgenres</button>
-            {/* <button onClick={() => dispatch(deletedObject(object))}>Delete object</button> */}
-            <button onClick={() => handleDelete()}>Delete object</button>
-            <button onClick={() => dispatch(UpdateObject(object))}>Update object</button>
+            {object.title !== '' && <Fragment><label>Preview</label><MusicType editable={false} parent={object} /></Fragment>}
+            <button onClick={()=> handleAddChild()}>Add Subgenre</button><br />
+            {object.id !== 'top' ? (
+                <Fragment>
+                    <button onClick={() => handleUpdate()}>Update Genre</button>
+                    <button onClick={() => handleDelete()}>Delete Genre</button>
+                </Fragment>) 
+                : 
+                <button onClick={() => dispatch(UpdateObject(object))}>Add Genre</button>
+            }
+            <button onClick={()=> dispatch(EditSelectedObject(emptyObject, false))}>Close</button>
+            
         </div>
 
     )
