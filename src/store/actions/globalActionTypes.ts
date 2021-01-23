@@ -5,6 +5,7 @@ export const SET_EDIT_SELECTED_OBJECT_ACTION = 'SET_EDIT_SELECTED_OBJECT_ACTION'
 export const UPDATE_OBJECT_ACTION = 'UPDATE_OBJECT_ACTION'
 export const UPDATE_SELECTED_OBJECT_ACTION = 'UPDATE_SELECTED_OBJECT_ACTION'
 export const DELETE_OBJECT_ACTION = 'DELETE_OBJECT_ACTION'
+export const IMPORT_FROM_JSON_ACTION = 'IMPORT_FROM_JSON_ACTION'
 
 
 interface SetEditFormVisibilityAction {
@@ -33,6 +34,11 @@ interface DeleteObjectAction {
     object: TMusic
 }
 
+interface ImportFromJSONAction {
+    type: typeof IMPORT_FROM_JSON_ACTION,
+    data: TMusic
+}
+
 
 
 export type globalActionTypes =
@@ -41,3 +47,4 @@ export type globalActionTypes =
     |   UpdateObjectAction
     |   UpdateSelectedObjectAction
     |   DeleteObjectAction
+    |   ImportFromJSONAction

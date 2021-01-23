@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { emptyObject } from '../constants/emptyObject'
 import generateGuidG4 from '../functions/generateGuidG4'
 import { TRootReducer } from '../store/reducers'
-import { updateSelectedObject, UpdateObject, deletedObject } from '../store/reducers/globalReducer'
+import { UpdateSelectedObject, UpdateObject, DeletedObject } from '../store/reducers/globalReducer'
 import {EditSelectedObject} from '../store/actions/globalActionCreator'
 import { TMusic } from '../types/types'
 import MusicType from '../controls/MusicType'
@@ -19,7 +19,7 @@ const ObjectEditForm = () => {
     const handleTitleChange = (title:string) => {
         let objectTemp = object
         objectTemp.title = title
-        dispatch(updateSelectedObject(objectTemp))
+        dispatch(UpdateSelectedObject(objectTemp))
     }
 
     const handleAddChild = () => {
@@ -46,9 +46,8 @@ const ObjectEditForm = () => {
         let tempData = parent
         tempData.children.forEach(child => {
             if (child.id === deleteObject.id){
-                console.log(true)
-                let b:TMusic = {id: tempData.id, title: tempData.title, children: tempData.children.filter(ch => ch.id !== deleteObject.id)}
-                dispatch(deletedObject(b))
+                let obj:TMusic = {id: tempData.id, title: tempData.title, children: tempData.children.filter(ch => ch.id !== deleteObject.id)}
+                dispatch(DeletedObject(obj))
             }
             else {
                 deleteNestedArray(child, deleteObject)
@@ -57,11 +56,11 @@ const ObjectEditForm = () => {
         })
     }
 
-    const handleDelete = () => {
+    const handleDeleteGenre = () => {
         deleteNestedArray(data, object)
     }
 
-    const handleUpdate = () => {
+    const handleUpdateGenre = () => {
         if (object.title !== '')
             dispatch(UpdateObject(object))
         else
@@ -72,8 +71,7 @@ const ObjectEditForm = () => {
     return (
         <div>
             <label>Title</label><br />
-            <textarea name={"title"} value={title} onChange={(e) => handleTitleChange(e.target.value)} /><br />
-            
+            <textarea name={"title"} value={title} onChange={(e) => handleTitleChange(e.target.value)} /><br /> 
             {isAddSubGenreVisible &&
                 <Fragment>
                     <label>Title</label><br />
@@ -84,8 +82,8 @@ const ObjectEditForm = () => {
             <button onClick={()=> handleAddChild()}>Add Subgenre</button><br />
             {object.id !== 'top' ? (
                 <Fragment>
-                    <button onClick={() => handleUpdate()}>Update Genre</button>
-                    <button onClick={() => handleDelete()}>Delete Genre</button>
+                    <button onClick={handleUpdateGenre}>Update Genre</button>
+                    <button onClick={handleDeleteGenre}>Delete Genre</button>
                 </Fragment>) 
                 : 
                 <button onClick={() => dispatch(UpdateObject(object))}>Add Genre</button>

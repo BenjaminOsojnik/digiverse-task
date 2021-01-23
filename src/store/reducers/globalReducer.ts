@@ -4,6 +4,7 @@ import {
     UPDATE_OBJECT_ACTION,
     UPDATE_SELECTED_OBJECT_ACTION,
     DELETE_OBJECT_ACTION,
+    IMPORT_FROM_JSON_ACTION,
     globalActionTypes} from '../actions/globalActionTypes'
 
 import {TGlobalState, TMusic} from '../../types/types'
@@ -118,7 +119,7 @@ const initialState: TGlobalState = {
 export default function globalReducer(state: TGlobalState = initialState, action: globalActionTypes): TGlobalState {
     
     
-    const findNestedArray = (parent: TMusic, editedObject: TMusic) => {
+    const getNewData = (parent: TMusic, editedObject: TMusic) => {
         let tempData = parent
         if (editedObject.id === parent.id){
             tempData.title = editedObject.title
@@ -128,7 +129,7 @@ export default function globalReducer(state: TGlobalState = initialState, action
         else {
             if (parent.children.length > 0)   {
                 parent.children.map(obj => {
-                   findNestedArray(obj, editedObject)
+                    getNewData(obj, editedObject)
                    return {...state.data, tempData}
                 })
             }
@@ -137,22 +138,6 @@ export default function globalReducer(state: TGlobalState = initialState, action
         return {...state.data, tempData}
 
     }
-
-    // const deleteNestedArray = (parent: TMusic, deletedObject: TMusic) => {
-    //     let tempData = parent
-    //     tempData.children.map(child => {
-    //         if (child.id === deletedObject.id){
-    //             console.log(true)
-    //             let b:TMusic = {id: tempData.id, title: tempData.title, children: tempData.children.filter(ch => ch.id !== deletedObject.id)}
-    //             console.log(b)
-    //             return b
-    //         }
-    //         else {
-    //             deleteNestedArray(child, deletedObject)
-    //         }
-
-    //     })
-    // }
 
     switch (action.type) {
         case SET_EDIT_FORM_VISIBILITY_ACTION: {
@@ -171,7 +156,7 @@ export default function globalReducer(state: TGlobalState = initialState, action
         
         case UPDATE_OBJECT_ACTION: {
             if (action.object.id !== 'top'){
-                let tempData = findNestedArray(state.data, action.object)
+                let tempData = getNewData(state.data, action.object)
                 return {
                     ...state, data: tempData, isEditFormVisible: false, selectedObject: emptyObject
                 }
@@ -195,13 +180,29 @@ export default function globalReducer(state: TGlobalState = initialState, action
         }
 
         case DELETE_OBJECT_ACTION: {
-            let tempData = findNestedArray(state.data, action.object)
-            console.log(tempData)
+            let tempData = getNewData(state.data, action.object)
             return {
                 ...state, data: tempData, isEditFormVisible: false, selectedObject: emptyObject
             }
         }
- 
+        
+        case IMPORT_FROM_JSON_ACTION: {
+            if (action.data.children !== []){
+                let stateTemp = initialState
+                stateTemp.data = action.data
+                return {
+                    ...stateTemp
+                }
+            }
+            else {
+                console.error('Invalid JSON format')
+                return {
+                    ...state
+                }
+            }
+
+        }
+
         default:
             return state
     }
@@ -228,16 +229,23 @@ export const UpdateObject = (object: TMusic): globalActionTypes => {
     }
 }
 
-export const updateSelectedObject = (object: TMusic): globalActionTypes => {
+export const UpdateSelectedObject = (object: TMusic): globalActionTypes => {
     return {
         type: UPDATE_SELECTED_OBJECT_ACTION,
         object
     }
 }
 
-export const deletedObject = (object: TMusic): globalActionTypes => {
+export const DeletedObject = (object: TMusic): globalActionTypes => {
     return {
         type: DELETE_OBJECT_ACTION,
         object
+    }
+}
+
+export const ImportFromJson = (data: TMusic): globalActionTypes => {
+    return {
+        type: IMPORT_FROM_JSON_ACTION,
+        data
     }
 }
